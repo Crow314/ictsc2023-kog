@@ -15,3 +15,13 @@
   become: true
   roles:
     - enable_login
+
+- name: Disable login
+  hosts:
+    - probrt
+  connection: network_cli
+  vars:
+    ansible_network_os: vyos
+  become: true
+  roles:
+    - disable_login
