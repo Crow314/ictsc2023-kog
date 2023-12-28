@@ -1,0 +1,4 @@
+export SAKURACLOUD_ACCESS_TOKEN="..."
+export SAKURACLOUD_ACCESS_TOKEN_SECRET="..."
+export ICTSC_INFRA_PASSWORD="..."
+export TF_VAR_infra_password="${ICTSC_INFRA_PASSWORD}"
