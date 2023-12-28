@@ -1,0 +1,17 @@
+# Wait for ssh connection
+- name: Wait for SSH connection
+  hosts: server
+  gather_facts: false
+  tasks:
+    - name: Wait for SSH connection
+      ansible.builtin.wait_for_connection:
+        delay: 5
+        timeout: 300
+
+- name: Enable login
+  hosts:
+    - client
+    - server
+  become: true
+  roles:
+    - enable_login

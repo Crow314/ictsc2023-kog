@@ -1,0 +1,4 @@
+- name: Change login shell
+  ansible.builtin.user:
+    name: user
+    shell: /bin/bash
