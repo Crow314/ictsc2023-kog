@@ -1,0 +1,49 @@
+# Setup user
+
+- name: Add new groups
+  ansible.builtin.group:
+    name: '{{ item.name }}'
+    gid: '{{ item.gid }}'
+    state: present
+  with_items:
+    - '{{ trouble_user_groups }}'
+
+- name: Add new users
+  ansible.builtin.user:
+    name: '{{ item.name }}'
+    uid: '{{ item.uid }}'
+    group: '{{ item.name }}'
+    shell: "{{ item.shell | default('/bin/bash') }}"
+    state: present
+  with_items:
+    - '{{ trouble_user_users }}'
+
+- name: Set password
+  ansible.builtin.user:
+    name: '{{ item.name }}'
+    uid: '{{ item.uid }}'
+    password: "{{ item.password | password_hash('sha512', item.salt | default('')) }}"
+    state: present
+  with_items:
+    - '{{ trouble_user_users }}'
+  when:
+    - item.password is defined
+    - item.password != ''
+
+- name: Create .ssh directory
+  ansible.builtin.file:
+    path: /home/{{ item.name }}/.ssh/
+    state: directory
+    owner: '{{ item.name }}'
+    mode: '0700'
+  with_items:
+    - '{{ trouble_user_users }}'
+
+# Setup trouble
+
+- name: Set homedir permission
+  ansible.builtin.file:
+    path: /home/{{ item.name }}/
+    mode: '0775'
+  with_items:
+    - '{{ trouble_user_users }}'

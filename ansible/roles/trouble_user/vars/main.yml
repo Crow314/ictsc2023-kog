@@ -1,0 +1,10 @@
+trouble_user_users:
+  - name: worker
+    uid: '1003'
+    password: "{{ lookup('env', 'ICTSC_INFRA_PASSWORD') }}"
+    salt: "{{ lookup('env', 'PASSWORD_SALT') }}"
+    shell: /bin/bash
+
+trouble_user_groups:
+  - name: worker
+    gid: '1003'
