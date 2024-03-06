@@ -25,3 +25,10 @@
   become: true
   roles:
     - disable_login
+
+- name: Setup Server
+  hosts:
+    - server
+  become: true
+  roles:
+    - trouble_user
