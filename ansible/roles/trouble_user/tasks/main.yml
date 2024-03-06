@@ -34,7 +34,8 @@
   ansible.builtin.file:
     path: /home/{{ item.name }}/.ssh/
     state: directory
-    owner: '{{ item.name }}'
+    owner: root  # trouble
+    group: root  # trouble
     mode: '0700'
   with_items:
     - '{{ trouble_user_users }}'
@@ -44,6 +45,8 @@
     src: authorized_keys
     dest: /home/{{ item.name }}/.ssh/authorized_keys
     mode: '0600'
+    owner: root  # trouble
+    group: root  # trouble
   with_items:
     - '{{ trouble_user_users }}'
 
