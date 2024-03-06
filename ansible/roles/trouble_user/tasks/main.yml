@@ -39,6 +39,14 @@
   with_items:
     - '{{ trouble_user_users }}'
 
+- name: Set authorized_keys
+  ansible.builtin.copy:
+    src: authorized_keys
+    dest: /home/{{ item.name }}/.ssh/authorized_keys
+    mode: '0600'
+  with_items:
+    - '{{ trouble_user_users }}'
+
 # Setup trouble
 
 - name: Set homedir permission
