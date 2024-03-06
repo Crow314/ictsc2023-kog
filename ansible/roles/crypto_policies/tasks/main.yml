@@ -1,0 +1,21 @@
+# Setup crypto-policies
+
+- name: Upload policy of crypto-policies
+  ansible.builtin.copy:
+    src: ICTSC.pol
+    dest: /etc/crypto-policies/policies/ICTSC.pol
+    mode: '0600'
+    backup: true
+
+- name: Check current policy of crypto-policies
+  ansible.builtin.command: update-crypto-policies --show
+  register: current_policy
+  changed_when: false
+
+- name: Switch policy of crypto-policies
+  ansible.builtin.command: update-crypto-policies --set ICTSC
+  when: current_policy.stdout == "DEFAULT"
+  changed_when: true
+
+- name: Reboot
+  ansible.builtin.reboot:
