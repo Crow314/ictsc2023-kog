@@ -26,6 +26,16 @@
   roles:
     - disable_login
 
+- name: Setup Router
+  hosts:
+    - router
+  connection: network_cli
+  vars:
+    ansible_network_os: vyos
+  roles:
+    - vyos_router
+    - acl
+
 - name: Setup Server
   hosts:
     - server
