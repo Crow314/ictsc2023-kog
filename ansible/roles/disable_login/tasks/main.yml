@@ -1,4 +1,0 @@
-- name: Delete user
-  vyos.vyos.vyos_user:
-    name: user
-    state: absent
