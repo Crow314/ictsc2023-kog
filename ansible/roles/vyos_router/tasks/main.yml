@@ -1,0 +1,21 @@
+# Setup VyOS Router
+
+- name: Set interfaces
+  vyos.vyos.vyos_l3_interfaces:
+    config:
+      - name: eth0
+        ipv4:
+          - address: 192.168.50.2/24
+      - name: eth1
+        ipv4:
+          - address: 192.168.51.1/24
+      - name: eth2
+        ipv4:
+          - address: 192.168.52.1/24
+    state: replaced
+
+- name: Set default Route
+  vyos.vyos.vyos_config:
+    lines:
+      - set protocols static route 0.0.0.0/0 next-hop 192.168.50.254
+    save: true
