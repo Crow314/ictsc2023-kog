@@ -1,0 +1,42 @@
+# Setup ACL
+
+- name: Create rule `to-svr`
+  vyos.vyos.vyos_firewall_rules:
+    config:
+      - afi: ipv4
+        rule_sets:
+          - name: to-svr
+            default_action: reject
+            rules:
+              - number: 10
+                description: Permit ICMP
+                protocol: icmp
+                action: accept
+              - number: 11
+                description: Permit ICMPv6
+                protocol: ipv6-icmp
+                action: accept
+              - number: 50
+                description: Permit HTTP
+                destination:
+                  address: 192.168.52.128
+                  port: 80
+                protocol: tcp
+                action: accept
+              - number: 51
+                description: Permit HTTPS
+                destination:
+                  address: 192.168.52.128
+                  port: 443
+                protocol: tcp
+                action: accept
+
+- name: Set rule `to-svr` to `eth1` in
+  vyos.vyos.vyos_firewall_interfaces:
+    config:
+      - name: eth1
+        access_rules:
+          - afi: ipv4
+            rules:
+              - name: to-svr
+                direction: in
