@@ -1,42 +1,31 @@
 # Setup ACL
 
 - name: Create rule `to-svr`
-  vyos.vyos.vyos_firewall_rules:
-    config:
-      - afi: ipv4
-        rule_sets:
-          - name: to-svr
-            default_action: reject
-            rules:
-              - number: 10
-                description: Permit ICMP
-                protocol: icmp
-                action: accept
-              - number: 11
-                description: Permit ICMPv6
-                protocol: ipv6-icmp
-                action: accept
-              - number: 50
-                description: Permit HTTP
-                destination:
-                  address: 192.168.52.128
-                  port: 80
-                protocol: tcp
-                action: accept
-              - number: 51
-                description: Permit HTTPS
-                destination:
-                  address: 192.168.52.128
-                  port: 443
-                protocol: tcp
-                action: accept
+  vyos.vyos.vyos_config:
+    lines:
+      - set firewall ipv4 name to-svr default-action reject
+      # 10
+      - set firewall ipv4 name to-svr rule 10 description Permit-ICMP
+      - set firewall ipv4 name to-svr rule 10 protocol icmp
+      - set firewall ipv4 name to-svr rule 10 action accept
+      # 50
+      - set firewall ipv4 name to-svr rule 50 description Permit-HTTP
+      - set firewall ipv4 name to-svr rule 50 protocol tcp
+      - set firewall ipv4 name to-svr rule 50 destination address 192.168.52.128
+      - set firewall ipv4 name to-svr rule 50 destination port 80
+      - set firewall ipv4 name to-svr rule 50 action accept
+      # 51
+      - set firewall ipv4 name to-svr rule 51 description Permit-HTTPS
+      - set firewall ipv4 name to-svr rule 51 protocol tcp
+      - set firewall ipv4 name to-svr rule 51 destination address 192.168.52.128
+      - set firewall ipv4 name to-svr rule 51 destination port 443
+      - set firewall ipv4 name to-svr rule 51 action accept
 
-- name: Set rule `to-svr` to `eth1` in
-  vyos.vyos.vyos_firewall_interfaces:
-    config:
-      - name: eth1
-        access_rules:
-          - afi: ipv4
-            rules:
-              - name: to-svr
-                direction: in
+- name: Set firewall rule
+  vyos.vyos.vyos_config:
+    lines:
+      # Define zones
+      - set firewall zone client interface eth1
+      - set firewall zone server interface eth2
+      # Set rule
+      - set firewall zone server from client firewall name to-svr
