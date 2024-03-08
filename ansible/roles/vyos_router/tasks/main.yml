@@ -18,4 +18,3 @@
   vyos.vyos.vyos_config:
     lines:
       - set protocols static route 0.0.0.0/0 next-hop 192.168.50.254
-    save: true
