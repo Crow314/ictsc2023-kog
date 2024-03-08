@@ -14,8 +14,18 @@
 
 - name: Switch policy of crypto-policies
   ansible.builtin.command: update-crypto-policies --set ICTSC
-  when: current_policy.stdout == "DEFAULT"
+  when: current_policy.stdout != "ICTSC"
   changed_when: true
+  notify: Reboot
 
-- name: Reboot
-  ansible.builtin.reboot:
+- name: Check does crypto-policies match
+  ansible.builtin.command: update-crypto-policies --check
+  register: policy_match
+  changed_when: false
+  ignore_errors: true
+
+- name: Switch policy of crypto-policies
+  ansible.builtin.command: update-crypto-policies --set ICTSC
+  when: policy_match.rc != 0
+  changed_when: true
+  notify: Reboot
