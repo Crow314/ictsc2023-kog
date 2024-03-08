@@ -8,24 +8,6 @@
         delay: 5
         timeout: 300
 
-- name: Enable login
-  hosts:
-    - client
-    - server
-  become: true
-  roles:
-    - enable_login
-
-- name: Disable login
-  hosts:
-    - probrt
-  connection: network_cli
-  vars:
-    ansible_network_os: vyos
-  become: true
-  roles:
-    - disable_login
-
 - name: Setup Router
   hosts:
     - router
