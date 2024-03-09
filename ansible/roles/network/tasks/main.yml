@@ -1,0 +1,23 @@
+- name: Upload netplan file for client
+  ansible.builtin.copy:
+    src: client-netplan.yaml
+    dest: /etc/netplan/99-netcfg.yaml
+    mode: '0644'
+  notify:
+    Apply netplan
+  when: inventory_hostname == 'client'
+
+- name: Setup network for server
+  community.general.nmcli:
+    conn_name: System eth1
+    routes4: 192.168.51.0/24 192.168.52.1
+    state: present
+  notify: Restart NetworkManager
+  when: inventory_hostname == 'server'
+
+- name: Reset machine-id
+  ansible.builtin.copy:
+    src: /dev/null
+    dest: /etc/machine-id
+    mode: '0444'
+  become: true
