@@ -3,4 +3,4 @@
     src: config
     dest: /home/user/.ssh/config
     mode: '0600'
-  when: hosts == 'client'
+  when: inventory_hostname == 'client'
