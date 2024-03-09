@@ -3,7 +3,7 @@
 - name: Create rule `to-svr`
   vyos.vyos.vyos_config:
     lines:
-      - set firewall ipv4 name to-svr default-action reject
+      - set firewall ipv4 name to-svr default-action drop
       # 10
       - set firewall ipv4 name to-svr rule 10 description Permit-ICMP
       - set firewall ipv4 name to-svr rule 10 protocol icmp
@@ -21,6 +21,11 @@
       - set firewall ipv4 name to-svr rule 51 destination port 443
       - set firewall ipv4 name to-svr rule 51 action accept
 
+- name: Create rule `to-cli`
+  vyos.vyos.vyos_config:
+    lines:
+      - set firewall ipv4 name to-cli default-action accept
+
 - name: Set firewall rule
   vyos.vyos.vyos_config:
     lines:
@@ -29,3 +34,4 @@
       - set firewall zone server interface eth2
       # Set rule
       - set firewall zone server from client firewall name to-svr
+      - set firewall zone client from server firewall name to-cli
