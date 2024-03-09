@@ -1,0 +1,10 @@
+host server
+    HostName 192.168.52.128
+    User worker
+    IdentityFile ~/.ssh/id_rsa
+    IdentitiesOnly yes
+    PreferredAuthentications publickey
+    PasswordAuthentication no
+    TCPKeepAlive yes
+    ServerAliveInterval 300
+    ServerAliveCountMax 3
