@@ -1,0 +1,6 @@
+- name: Upload .ssh/config
+  ansible.builtin.copy:
+    src: config
+    dest: /home/user/.ssh/config
+    mode: '0600'
+  when: hosts == 'client'
