@@ -3,6 +3,7 @@
     - client
   become: true
   roles:
+    - network
     - client_ssh
 
 - name: Setup Router
@@ -20,5 +21,6 @@
     - server
   become: true
   roles:
+    - network
     - trouble_user
     - crypto_policies
